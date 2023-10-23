@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fragments2.R
@@ -22,22 +23,21 @@ class ShowListFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var adapter: UserAdapter
 
-    private val viewModel: ShowListFragmentViewModel by activityViewModels() {ShowListFragmentViewModel.Factory}
+    private val viewModel: ShowListFragmentViewModel by viewModels() {ShowListFragmentViewModel.Factory}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // requireActivity().supportFragmentManager.
         setFragmentResultListener("rqst") { key, bundle ->
             Log.d("MyLog", "before    "+bundle)
             val user = bundle.getSerializable("bundle") as? User
 
             Log.d("MyLog", "afterserializable"+user)
 
-            val position = bundle?.getInt("bundle1")
+            val position = bundle.getInt("bundle1")
 
             Log.d("MyLog", "aftergetInt     "+position)
-            position?.let { user?.let { it1 -> viewModel.updateValue(it1, it) } }
+            user?.let { viewModel.updateValue(it, position) }
 
         }
     }
