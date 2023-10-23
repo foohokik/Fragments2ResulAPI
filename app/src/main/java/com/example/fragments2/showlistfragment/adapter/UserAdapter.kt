@@ -18,7 +18,7 @@ class UserAdapter (private val userActionListener:UserActionListener) : Recycler
 
     class UserViewHolder (val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root) {
 
-       fun bind(user: User, userActionListener: UserActionListener)= binding.apply {
+       fun bind(user: User, userActionListener: UserActionListener) = binding.apply {
            tvUserName.text = user.name
            tvSurname.text = user.surname
            tvPhoneNumber.text = user.phoneNumber

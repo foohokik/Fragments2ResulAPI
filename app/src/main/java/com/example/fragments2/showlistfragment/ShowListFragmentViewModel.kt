@@ -1,5 +1,6 @@
 package com.example.fragments2.showlistfragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,7 @@ import com.example.fragments2.data.User
 import com.example.fragments2.data.UserRepository
 import com.example.fragments2.showlistfragment.adapter.UserActionListener
 
-class ShowListFragmentViewModel(private val userRepository: UserRepository):ViewModel(), UserActionListener {
+class ShowListFragmentViewModel(userRepository: UserRepository):ViewModel(), UserActionListener {
 
     private val _usersLiveData = MutableLiveData<List<User>>()
     val usersLiveData: LiveData<List<User>> = _usersLiveData
@@ -23,10 +24,15 @@ class ShowListFragmentViewModel(private val userRepository: UserRepository):View
         _usersLiveData.value = userRepository.getUsers()
     }
 
-    fun updateValue (user: User, position: Int) {
+    fun updateValue(user: User, position: Int) {
         val newUsers = mutableListOf<User>()
-        newUsers.addAll(userRepository.getUsers())
-        newUsers[position] = user
+        usersLiveData.value?.let { newUsers.addAll(it) }
+        newUsers.removeAt(position)
+        newUsers.add(position, user)
+        Log.i("myTag","user "+user)
+        Log.i("myTag","newUsers.get(position) "+newUsers.get(position))
+//        newUsers.addAll(userRepository.getUsers())
+//        newUsers[position] = user
         _usersLiveData.value = newUsers
     }
 
